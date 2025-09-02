@@ -2,11 +2,16 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Hash;
+use App\Notifications\VerifyEmailNotification;
 
-class UserModel extends Model{
-    use HasFactory;
+class UserModel extends Authenticatable implements MustVerifyEmail
+{
+    use HasFactory, Notifiable;
 
     protected $table = 'users';
     protected $primaryKey = 'id';
@@ -25,6 +30,35 @@ class UserModel extends Model{
         'user_phone_emergency_contact'
     ];
 
-    public $timestamps= true;
+    public $timestamps = true;
 
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+    ];
+
+    // Laravel usará esto para verificar correos
+    public function getEmailForVerification(){
+        return $this->user_email;
+    }
+
+    // Laravel usará esto para autenticación
+    public function getAuthPassword(){
+        return $this->user_password;
+    }
+
+    // Opcional: alias "email"
+    public function getEmailAttribute(){
+        return $this->user_email;
+    }
+
+    public function sendEmailVerificationNotification()
+    {
+        $this->notify(new VerifyEmailNotification());
+    }
+
+    // Ocultar contraseña en arrays/JSON
+    protected $hidden = [
+        'user_password',
+        'remember_token',
+    ];
 }

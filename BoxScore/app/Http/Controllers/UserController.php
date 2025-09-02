@@ -40,10 +40,15 @@ class UserController{
             'user_password' => Hash::make($request->password)
         ]);
 
-        return redirect()->route('home')->with('flash', [
-            'title' => 'Registro exitoso',
-            'message' => 'Tu cuenta ha sido creada correctamente.'
-        ]);
+        $user->sendEmailVerificationNotification();
+    
+        // return redirect()->route('home')->with('flash', [
+        //     'title' => 'Registro exitoso',
+        //     'message' => 'Tu cuenta ha sido creada correctamente.'
+        // ]);
 
+        return Inertia::render('Auth/VerifyEmail', [
+            'status' => session('status')
+        ]);
     }
 }
