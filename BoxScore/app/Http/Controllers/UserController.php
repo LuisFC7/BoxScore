@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\Rules\Password;
 use Illuminate\Support\Facades\Hash;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Auth;
 
 class UserController{
 
@@ -42,13 +43,32 @@ class UserController{
 
         $user->sendEmailVerificationNotification();
     
-        // return redirect()->route('home')->with('flash', [
-        //     'title' => 'Registro exitoso',
-        //     'message' => 'Tu cuenta ha sido creada correctamente.'
-        // ]);
-
+       
         return Inertia::render('Auth/VerifyEmail', [
-            'status' => session('status')
+            'status' => session('status'),
+            'email' => $request->email, // Pasamos el email al componente React
         ]);
+
+    }
+
+    public function loginUser(Request $request){
+
+        $request->validate([
+            'email'    => 'required|email',
+            'password'=> ['required', Password::defaults()]
+        ]);
+
+        $user = UserModel::where('user_email', $request->email)->first();
+
+        if (!$user || !Hash::check($request->password, $user->user_password)) {
+            
+            return back()->withErrors([
+                'email' => 'Las credenciales no son válidas.',
+            ]);
+        }
+
+        Auth::login($user);
+        return redirect()->route('dashboard');
+
     }
 }

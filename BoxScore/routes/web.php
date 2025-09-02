@@ -51,16 +51,43 @@ Route::get('/email/verify/{id}/{hash}', function ($id, $hash) {
 })->middleware(['signed'])->name('verification.verify');
 
 Route::post('/email/verification-notification', function (Request $request) {
-    $request->user()->sendEmailVerificationNotification();
+    $request->validate([
+        'email' => 'required|email|exists:users,user_email',
+    ]);
 
-    return back()->with('message', 'Se ha enviado un nuevo link de verificación.');
-})->middleware(['auth', 'throttle:6,1'])->name('verification.send');
+    $user = UserModel::where('user_email', $request->email)->first();
+
+    if ($user) {
+        $user->sendEmailVerificationNotification();
+
+        // Retornamos la misma página Inertia con un nuevo status
+        return Inertia::render('Auth/VerifyEmail', [
+            'status' => 'verification-link-sent',
+            'email' => $request->email,
+        ]);
+    }
+
+    return Inertia::render('Auth/VerifyEmail', [
+        'status' => 'error',
+        'email' => $request->email,
+    ]);
+})->middleware('throttle:6,1')->name('verification.send');
 
 
 // Página de login
 Route::get('/login', function () {
     return Inertia::render('login');
 })->name('login');
+
+Route::post('/user-login', [UserController::class, 'loginUser']) -> name('user.login');
+Route::post('/user-store', [UserController::class, 'store'])->name('user.store');
+
+
+// Rutas protegidas
+Route::get('/dashboard', function (){
+    return Inertia::render('Auth/dashboard', [
+        'email' => Auth::user()->user_email, ]);
+})->middleware('auth')->name('dashboard');
 
 require __DIR__.'/settings.php';
 require __DIR__.'/auth.php';
