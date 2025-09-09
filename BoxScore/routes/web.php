@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Inertia\Inertia;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\AuthController;
 
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
@@ -18,15 +19,31 @@ Route::get('/', function () {
 Route::get('/register', [UserController::class, 'showFormRegisterUser']);
 Route::post('/user-store', [UserController::class, 'store'])->name('user.store');
 
+// Forgot Password
+Route::get('/forgot-password', [UserController::class, 'showFormPasswordReset']);
+
 //Routes for verification Email
 Route::get('/email/verify', function () {
-    return Inertia::render('Auth/VerifyEmail'); // Pantalla React que vas a crear
+    return Inertia::render('Auth/VerifyEmail');
 })->middleware('auth')->name('verification.notice');
 
-// Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
-//     $request->fulfill();
-//     return redirect('/dashboard');
-// })->middleware(['auth', 'signed'])->name('verification.verify');
+//Route para enviar enlace de recuperación de password
+Route::post('/sendLinkPassword', [AuthController::class, 'requestPasswordRecover'])
+    ->middleware('guest')
+    ->name('sendLinkPassword');
+    
+// Envia el enlace al email
+Route::get('/reset-password/{token}', function (string $token) {      
+    return Inertia::render('Auth/ResetPasswordForm', ['token' => $token]);
+})->middleware('guest')->name('password.reset');
+
+//Route para enviar enlace de recuperación de password
+Route::post('/save-password', [AuthController::class, 'reset'])
+    ->middleware('guest')
+    
+->name('save-password');
+
+
 Route::get('/email/verify/{id}/{hash}', function ($id, $hash) {
     // Buscar usuario
     $user = UserModel::findOrFail($id);
@@ -80,7 +97,8 @@ Route::get('/login', function () {
 })->name('login');
 
 Route::post('/user-login', [UserController::class, 'loginUser']) -> name('user.login');
-Route::post('/user-store', [UserController::class, 'store'])->name('user.store');
+Route::post('/logout', [UserController::class, 'logoutUser'])->name('user.logout');
+
 
 
 // Rutas protegidas

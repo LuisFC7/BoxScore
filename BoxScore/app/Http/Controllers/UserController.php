@@ -5,15 +5,21 @@ namespace App\Http\Controllers;
 use App\Models\UserModel;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rules\Password;
+
 use Illuminate\Support\Facades\Hash;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\RateLimiter;
 
 class UserController{
 
     //Shows the form to register an account
     public function showFormRegisterUser(){
         return Inertia::render('register');
+    }
+
+    public function showFormPasswordReset(){
+        return Inertia::render('Auth/ForgotPassword');
     }
 
     public function store(Request $request){
@@ -70,5 +76,14 @@ class UserController{
         Auth::login($user);
         return redirect()->route('dashboard');
 
+    }
+
+    public function logoutUser(Request $request){
+        Auth::logout();
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect('/login');
     }
 }
