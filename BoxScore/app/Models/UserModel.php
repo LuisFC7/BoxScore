@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Hash;
 use App\Notifications\VerifyEmailNotification;
+use App\Notifications\CustomResetPassword;
 
 class UserModel extends Authenticatable implements MustVerifyEmail
 {
@@ -54,6 +55,11 @@ class UserModel extends Authenticatable implements MustVerifyEmail
     public function sendEmailVerificationNotification()
     {
         $this->notify(new VerifyEmailNotification());
+    }
+
+    public function sendPasswordResetNotification($token)
+    {
+        $this->notify(new CustomResetPassword($token));
     }
 
     // Ocultar contraseña en arrays/JSON

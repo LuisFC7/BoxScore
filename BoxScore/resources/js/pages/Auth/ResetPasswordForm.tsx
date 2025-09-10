@@ -9,19 +9,21 @@ type ResetPasswordProps  = {
     email?: string;
 };
 
-export default function ResetPasswordForm({email, token}:ResetPasswordProps ) {
-
-    type ResetPasswordFormType = {
+type ResetPasswordFormType = {
         email: string;
+        token: string;
         password: string;
         password_confirmation: string;
-    }
+    };
 
-    const { data, setData, post, processing, errors } = useForm({
-        email: email || '',
+export default function ResetPasswordForm({email, token}:ResetPasswordProps ) {
+    console.log("Email recibido en props:", email);
+
+    const { data, setData, post, processing, errors } = useForm<ResetPasswordFormType>({
+        email: email || '',      // viene de props
+        token: token,            // viene de props
         password: '',
         password_confirmation: '',
-        token: token, // 👈 asigna el token aquí
     });
 
     const [showPassword, setShowPassword] = useState(false);

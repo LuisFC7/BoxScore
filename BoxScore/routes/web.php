@@ -32,9 +32,15 @@ Route::post('/sendLinkPassword', [AuthController::class, 'requestPasswordRecover
     ->middleware('guest')
     ->name('sendLinkPassword');
     
-// Envia el enlace al email
-Route::get('/reset-password/{token}', function (string $token) {      
-    return Inertia::render('Auth/ResetPasswordForm', ['token' => $token]);
+// Redirecciona del email al page ResetPasswordForm
+Route::get('/reset-password/{token}', function (string $token) {
+    // Captura el email del query string
+    $email = request()->query('email');
+
+    return Inertia::render('Auth/ResetPasswordForm', [
+        'token' => $token,
+        'email' => $email, // <--- ahora React recibirá el email
+    ]);
 })->middleware('guest')->name('password.reset');
 
 //Route para enviar enlace de recuperación de password

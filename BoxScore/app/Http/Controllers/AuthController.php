@@ -50,7 +50,7 @@ class AuthController{
     }
 
     public function reset(Request $request){
-
+        
         $request->validate([
             'token' => 'required',
             'email'=> 'required|email',
@@ -80,7 +80,6 @@ class AuthController{
             }
         );
         
-        \Log::info('Password reset status: ' . $status);
 
         if ($status === Password::PASSWORD_RESET) {
             return redirect()->route('login')->with('flash', [
