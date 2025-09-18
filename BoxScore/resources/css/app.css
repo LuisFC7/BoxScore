@@ -139,3 +139,35 @@
         @apply bg-background text-foreground;
     }
 }
+
+
+/* Botón del país */
+.react-tel-input .flag-dropdown {
+  border-radius: 0.5rem 0 0 0.5rem !important; /* esquinas izquierdas */
+  border: 1px solid #d1d5db !important;
+  background-color: #f9fafb !important; /* bg similar a bg-gray-50 */
+  height: 100%;
+  padding: 0 0.75rem;
+  transition: border 0.2s, box-shadow 0.2s;
+  color: #000;
+}
+
+/* Input del teléfono */
+.react-tel-input input {
+  border-radius: 0 0.5rem 0.5rem 0 !important; /* esquinas derechas */
+  border-left: none !important; /* evita doble borde con el botón */
+  border: 1px solid #d1d5db !important; /* borde gris */
+  background-color: #f9fafb !important; /* bg-gray-50 */
+  color: #000 !important; /* text-gray-900 */
+  padding: 0.5rem 0.75rem !important; /* px-4 py-2 */
+  width: 100% !important;
+  transition: border 0.2s, box-shadow 0.2s;
+}
+
+/* Focus del input */
+.react-tel-input input:focus {
+  outline: none !important;
+  border-color: #3b82f6 !important; /* focus:border-blue-500 */
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3) !important; /* focus:ring-2 focus:ring-blue-500 */
+  color: #000;
+}

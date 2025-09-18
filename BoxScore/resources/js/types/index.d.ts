@@ -44,3 +44,17 @@ import { LucideIcon } from 'lucide-react';
 export type resetPasswordForm = {
     email:string
 }
+
+export type profileUserType  = {
+    email:string;
+    fullname: string;
+    password: string;
+    password_confirmation: string;
+    profile_image: File | null;
+    phone: string | null;
+    birthdate:Date|null;
+    country: string | null;
+    state:string|null;
+    city:string|null;
+    emergencyphone:string|null;
+}

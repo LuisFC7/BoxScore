@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import { useForm } from "@inertiajs/react";
+import React, { FormEvent, useState } from "react";
 
 type HeaderProps = {
   email: string;
@@ -6,6 +7,12 @@ type HeaderProps = {
 };
 
 export default function HeaderAuth({ email, avatarUrl }: HeaderProps) {
+
+  const { post } = useForm({});
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault();
+    post('/logout');
+  }
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -48,7 +55,7 @@ export default function HeaderAuth({ email, avatarUrl }: HeaderProps) {
                   Ajustes
                 </a>
 
-                <form method="POST" action="/logout">
+                <form onSubmit={handleSubmit}>
                   <button
                     type="submit"
                     className="w-full text-left px-4 py-2 hover:bg-gray-100"
@@ -56,6 +63,7 @@ export default function HeaderAuth({ email, avatarUrl }: HeaderProps) {
                     Cerrar sesión
                   </button>
                 </form>
+
               </div>
             )}
           </div>

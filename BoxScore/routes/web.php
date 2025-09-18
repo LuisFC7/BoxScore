@@ -114,10 +114,12 @@ Route::middleware(['auth'])->group(function () {
             'email' => Auth::user()->user_email, ]);
     })->middleware('auth')->name('dashboard');
 
-    Route::get('/profile', function(){
-        return Inertia::render('Auth/profileSettings',[
-            'email' => Auth::user()->user_email,]);
-    })->middleware('auth')->name('profile');
+    Route::get('/profile', [UserController::class,'showFormEditUser'])
+        ->middleware('auth')
+        ->name('profile');
+
+    Route::post('/profile-edit', [UserController::class, 'updateUser'])
+        ->middleware('auth');
     
 });
 
