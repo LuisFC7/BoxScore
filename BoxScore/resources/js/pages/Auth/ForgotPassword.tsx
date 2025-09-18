@@ -24,8 +24,7 @@ export default function ResetPassword() {
 
         post('/sendLinkPassword', {
             onSuccess: () => {
-                // Aquí llamas tu modal
-                // Por ejemplo, si usas un state para abrirlo:
+               
                 setModalOpen(true);
             },
             onError: (errors) => {

@@ -1,5 +1,6 @@
 import { useForm } from "@inertiajs/react";
 import { FormEvent } from "react";
+import HeaderAuth from "@/components/HeaderAuth";
 
 
 export default function DashboardPage({ email }: { email: string }) {
@@ -13,18 +14,24 @@ export default function DashboardPage({ email }: { email: string }) {
         }
 
     return (
-        <div className="p-6">
+        <div className="min-h-screen flex flex-col">
+        {/* Header arriba */}
+        <HeaderAuth email={email} />
+
+        {/* Contenido */}
+        <main className="flex-1 p-6">
             <p className="text-lg">Hola, {email}</p>
             <h1 className="text-2xl font-bold mt-4">Dashboard</h1>
 
             <form onSubmit={handleSubmit} className="mt-6">
-                <button
-                    type="submit"
-                    className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition"
-                >
-                    Cerrar Sesión
-                </button>
+            <button
+                type="submit"
+                className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition"
+            >
+                Cerrar Sesión
+            </button>
             </form>
+        </main>
         </div>
     );
 }

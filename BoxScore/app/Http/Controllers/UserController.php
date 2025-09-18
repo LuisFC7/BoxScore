@@ -74,6 +74,7 @@ class UserController{
         }
 
         Auth::login($user);
+        
         return redirect()->route('dashboard');
 
     }

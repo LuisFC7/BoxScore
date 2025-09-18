@@ -106,12 +106,20 @@ Route::post('/user-login', [UserController::class, 'loginUser']) -> name('user.l
 Route::post('/logout', [UserController::class, 'logoutUser'])->name('user.logout');
 
 
-
 // Rutas protegidas
-Route::get('/dashboard', function (){
-    return Inertia::render('Auth/dashboard', [
-        'email' => Auth::user()->user_email, ]);
-})->middleware('auth')->name('dashboard');
+Route::middleware(['auth'])->group(function () {
+
+    Route::get('/dashboard', function (){
+        return Inertia::render('Auth/dashboard', [
+            'email' => Auth::user()->user_email, ]);
+    })->middleware('auth')->name('dashboard');
+
+    Route::get('/profile', function(){
+        return Inertia::render('Auth/profileSettings',[
+            'email' => Auth::user()->user_email,]);
+    })->middleware('auth')->name('profile');
+    
+});
 
 require __DIR__.'/settings.php';
 require __DIR__.'/auth.php';

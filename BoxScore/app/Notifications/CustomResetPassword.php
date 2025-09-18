@@ -40,13 +40,12 @@ class CustomResetPassword extends Notification
             'token' => $this->token,
             'email' => $notifiable->getEmailForPasswordReset(),
         ], false));
-        
+
         return (new MailMessage)
             ->subject('BoxScore. Reestablece tu contraseña')
             ->greeting('¡Hola ' . $notifiable->user_name . '!')
             ->line('Para reestablecer tu contraseña haz click en el botón de abajo.')
             ->action('Reestablecer contraseña', $url)
-            // ->action('Reestablecer contraseña', url('/'))
             ->line('Este enlace expira en 60 minutos')
             ->line('Si no solicitaste un reestablecimiento de contraseña, ignora este correo')
             ->salutation('¡Saludos, BoxScore Team!');
