@@ -109,9 +109,12 @@ Route::post('/logout', [UserController::class, 'logoutUser'])->name('user.logout
 // Rutas protegidas
 Route::middleware(['auth'])->group(function () {
 
-    Route::get('/dashboard', function (){
+    Route::get('/dashboard', function () {
+        $user = Auth::user();
         return Inertia::render('Auth/dashboard', [
-            'email' => Auth::user()->user_email, ]);
+            'user' => $user->user_name,
+            'avatarUrl' => $user->user_img ? '/storage/' . $user->user_img : null,
+        ]);
     })->middleware('auth')->name('dashboard');
 
     Route::get('/profile', [UserController::class,'showFormEditUser'])

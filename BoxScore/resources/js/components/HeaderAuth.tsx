@@ -2,11 +2,11 @@ import { useForm } from "@inertiajs/react";
 import React, { FormEvent, useState } from "react";
 
 type HeaderProps = {
-  email: string;
+  user: string;
   avatarUrl?: string; 
 };
 
-export default function HeaderAuth({ email, avatarUrl }: HeaderProps) {
+export default function HeaderAuth({ user, avatarUrl }: HeaderProps) {
 
   const { post } = useForm({});
   const handleSubmit = (e: FormEvent) => {
@@ -35,19 +35,15 @@ export default function HeaderAuth({ email, avatarUrl }: HeaderProps) {
               className="flex items-center focus:outline-none"
             >
               <img
-                src={
-                  avatarUrl ||
-                  `https://ui-avatars.com/api/?name=${email}&background=random`
-                }
+                src={avatarUrl || `https://ui-avatars.com/api/?name=${user}&background=random`}
                 alt="avatar"
-                className="w-10 h-10 rounded-full border-2 border-red-500"
+                className="w-10 h-10 rounded-full border-2 border-green-500"
               />
             </button>
 
             {/* Dropdown */}
             {isOpen && (
               <div className="absolute right-0 mt-2 w-48 bg-white text-black rounded-lg shadow-lg py-2">
-                <p>{email}</p>
                 <a
                   href="/profile"
                   className="block px-4 py-2 hover:bg-gray-100"

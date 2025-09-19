@@ -153,7 +153,7 @@ class UserController{
         // Actualizar usuario
         $user->update($updateData);
 
-        return redirect()->route('dashboard')->with('success', 'Perfil actualizado correctamente');
+        return redirect()->route('profile')->with('success', 'Perfil actualizado correctamente');
     }
 
 

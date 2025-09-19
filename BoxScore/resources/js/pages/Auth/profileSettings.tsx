@@ -8,6 +8,7 @@ import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import '../../../css/app.css';
 import { profileUserType } from "@/types";
+import user from "@/routes/user";
 
 
 export default function profileSettings({ profile }: { profile: profileUserType }) {
@@ -68,20 +69,27 @@ export default function profileSettings({ profile }: { profile: profileUserType 
     setIsPasswordValid(validatePassword(data.password));
   }, [data.password]);
 
-  // 👇 Estado para preview de la imagen
-  const [preview, setPreview] = useState<string>("/img/ProfileDefault.png");
+  // Estado para preview de la imagen
+  const [preview, setPreview] = useState<string | null>(null);
+
+  // const [preview, setPreview] = useState<string>("/img/ProfileDefault.png");
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
       setData("profile_image", file);
-      setPreview(URL.createObjectURL(file)); // Previsualización
+      setPreview(URL.createObjectURL(file)); 
     }
   };
 
   return (
     <div className="min-h-screen flex flex-col">
-      <HeaderAuth email={profile.email} />
+
+      <HeaderAuth
+        user={profile.fullname}
+        avatarUrl={profile.profile_image ? `/storage/${profile.profile_image}` : undefined}
+      />
+
       <div className="flex flex-1 items-center justify-center px-4 py-12">
         <div className="w-full max-w-md bg-white shadow-lg rounded-2xl p-8">
           {/* Header */}
@@ -95,7 +103,14 @@ export default function profileSettings({ profile }: { profile: profileUserType 
             {/* Imagen de perfil */}
             <div className="flex flex-col items-center space-y-3">
               <img
-                src={preview}
+                src = {
+                  preview
+                    ? preview
+                    : profile?.profile_image
+                    ? `/storage/${profile.profile_image}`
+                    : "/img/ProfileDefault.png"
+                
+                }
                 alt="Preview"
                 className="w-24 h-24 rounded-full object-cover border"
               />
