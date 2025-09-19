@@ -57,4 +57,30 @@ export type profileUserType  = {
     state:string|null;
     city:string|null;
     emergencyphone:string|null;
+    gender:string|null;
+}
+
+export type BenchmarkMovement = {
+  id: number;
+  front_squat: number | null;
+  overhead_squat: number | null;
+  shoulder_press: number | null;
+  push_press: number | null;
+  push_jerk: number | null;
+  deadlift: number | null;
+  sumo_high_pull: number | null;
+  power_clean: number | null;
+  power_snatch: number | null;
+  clean_and_jerk: number | null;
+  snatch: number | null;
+  created_at: string;
+  updated_at: string;
+  benchmark_user_id: number;
+};
+
+export type benchMarkUserType = {
+    email:string;
+    fullname:string;
+    avatarUrl:File | null;
+    benchmarkMovements:BenchmarkMovement[];
 }

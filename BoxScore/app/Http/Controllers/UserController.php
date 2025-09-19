@@ -95,7 +95,7 @@ class UserController{
                 'email' => $user->user_email,
                 'fullname'=> $user->user_name,
                 'phone' => $user->user_phone,
-                'birthdate' => $user->user_birthdate,
+                'birthdate' => $user->user_birthday,
                 'country' => $user->user_country,
                 'state' => $user->user_state,
                 'city' => $user->user_city,
@@ -119,7 +119,10 @@ class UserController{
             'emergencyphone'  => 'nullable|string|max:20',
             'profile_image'   => 'nullable|image|max:2048',
             'password'        => ['nullable', 'confirmed', Password::defaults()],
+            'gender'          => 'nullable|string|max:40',
         ], [
+            'fullname.required'   => 'El nombre es obligatorio y no puede estar vacío.',
+            'fullname.max'        => 'El nombre no puede superar los 255 caracteres.',
             'password.min'         => 'La contraseña debe tener al menos 12 caracteres.',
             'password.letters'     => 'La contraseña debe contener al menos una letra.',
             'password.mixed'       => 'La contraseña debe incluir mayúsculas y minúsculas.',
@@ -137,6 +140,7 @@ class UserController{
             'user_state'    => $validated['state'] ?? null,
             'user_city'     => $validated['city'] ?? null,
             'user_phone_emergency_contact' => $validated['emergencyphone'] ?? null,
+            'user_gender'  => $validated['gender']?? null,
         ];
 
         // Imagen
@@ -150,11 +154,19 @@ class UserController{
             $updateData['user_password'] = Hash::make($validated['password']);
         }
 
-        // Actualizar usuario
+        if (!empty($validated['birthdate'])) {
+            $updateData['user_birthday'] = substr($validated['birthdate'], 0, 10);
+        } else {
+            $updateData['user_birthday'] = null; // Si no hay fecha, asignamos null
+        }
+        
         $user->update($updateData);
 
-        return redirect()->route('profile')->with('success', 'Perfil actualizado correctamente');
+        return redirect()->route('profile')->with('flash', [
+            'title' => 'Éxito',
+            'message' => 'Datos actualizados correctamente'
+        ]);
     }
 
-
+    
 }

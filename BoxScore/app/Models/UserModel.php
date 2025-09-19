@@ -28,7 +28,8 @@ class UserModel extends Authenticatable implements MustVerifyEmail
         'user_country',
         'user_state',
         'user_city',
-        'user_phone_emergency_contact'
+        'user_phone_emergency_contact',
+        'user_gender'
     ];
 
     public $timestamps = true;
@@ -57,10 +58,14 @@ class UserModel extends Authenticatable implements MustVerifyEmail
         $this->notify(new VerifyEmailNotification());
     }
 
-    public function sendPasswordResetNotification($token)
-    {
+    public function sendPasswordResetNotification($token)    {
         $this->notify(new CustomResetPassword($token));
     }
+
+    public function benchmarkMovements() {
+        return $this->hasMany(BenchMovementsModel::class, 'benchmark_user_id', 'id');
+    }
+
 
     // Ocultar contraseña en arrays/JSON
     protected $hidden = [

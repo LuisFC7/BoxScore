@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Hash;
 use Inertia\Inertia;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BenchMovementsController;
 
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
@@ -123,6 +124,10 @@ Route::middleware(['auth'])->group(function () {
 
     Route::post('/profile-edit', [UserController::class, 'updateUser'])
         ->middleware('auth');
+
+    Route::get('/bench-movements', [BenchMovementsController::class,'showBenchMarkMovementsUser'])
+        ->middleware('auth')
+        ->name('bench-movements');
     
 });
 

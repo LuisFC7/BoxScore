@@ -1,5 +1,5 @@
 import { FormEvent, useEffect, useState } from "react";
-import { useForm } from "@inertiajs/react";
+import { useForm, usePage } from "@inertiajs/react";
 import HeaderAuth from "@/components/HeaderAuth";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 import Select from "react-select";
@@ -8,23 +8,14 @@ import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import '../../../css/app.css';
 import { profileUserType } from "@/types";
-import user from "@/routes/user";
+import ModalPopUp from "@/components/ModalPopUp";
 
+type FlashProps = {
+  flash?: { title?: string; message?: string };
+  errors?: Record<string, string>;
+};
 
 export default function profileSettings({ profile }: { profile: profileUserType }) {
-
-  type UserProfile = {
-    fullname: string;
-    password: string;
-    password_confirmation: string;
-    profile_image: File | null;
-    phone: string | null;
-    birthdate: Date | null;
-    country: string | null;
-    state: string | null;
-    city: string | null;
-    emergencyphone: string | null;
-  };
 
   const { data, setData, post, processing, errors } = useForm<profileUserType>({
     email: profile.email,
@@ -38,12 +29,38 @@ export default function profileSettings({ profile }: { profile: profileUserType 
     state: profile.state || "",
     city: profile.city || "",
     emergencyphone: profile.emergencyphone || "",
+    gender: profile.gender || "",
   });
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     post('profile-edit');
   }
+
+  const { props } = usePage<FlashProps>();
+
+  const [modalType, setModalType] = useState<"success" | "error" | null>(null);
+  const [modalTitle, setModalTitle] = useState("");
+  const [modalMessage, setModalMessage] = useState("");
+  const [modalShow, setModalShow] = useState(false);
+
+  useEffect(() => {
+    // Caso éxito
+    if (props.flash?.message) {
+      setModalType("success");
+      setModalTitle(props.flash.title || "Éxito");
+      setModalMessage(props.flash.message || "Operación exitosa");
+      setModalShow(true);
+    }
+
+    // Caso error
+    if (props.errors && Object.keys(props.errors).length > 0) {
+      setModalType("error");
+      setModalTitle("Errores de validación");
+      setModalMessage(Object.values(props.errors).join("\n"));
+      setModalShow(true);
+    }
+  }, [props.flash, props.errors]);
 
   const [options, setOptions] = useState(countryList().getData());
 
@@ -78,9 +95,11 @@ export default function profileSettings({ profile }: { profile: profileUserType 
     const file = e.target.files?.[0];
     if (file) {
       setData("profile_image", file);
-      setPreview(URL.createObjectURL(file)); 
+      setPreview(URL.createObjectURL(file));
     }
   };
+
+  
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -103,16 +122,16 @@ export default function profileSettings({ profile }: { profile: profileUserType 
             {/* Imagen de perfil */}
             <div className="flex flex-col items-center space-y-3">
               <img
-                src = {
+                src={
                   preview
                     ? preview
                     : profile?.profile_image
-                    ? `/storage/${profile.profile_image}`
-                    : "/img/ProfileDefault.png"
-                
+                      ? `/storage/${profile.profile_image}`
+                      : "/img/ProfileDefault.png"
+
                 }
                 alt="Preview"
-                className="w-24 h-24 rounded-full object-cover border"
+                className="w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 rounded-full object-cover border-2 border-green-500 "
               />
               <label
                 htmlFor="profileImage"
@@ -344,6 +363,19 @@ export default function profileSettings({ profile }: { profile: profileUserType 
                 buttonClass="my-phone-button"
               />
             </div>
+                {/* {Genero} */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Género</label>
+              <select
+                value={data.gender || ""}
+                onChange={(e) => setData("gender", e.target.value)}
+                className="mt-1 block w-full rounded-lg border border-gray-300 bg-gray-50 px-4 py-2 text-gray-900 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 transition"
+              >
+                <option disabled value="">Selecciona</option>
+                <option value="masculino">Masculino</option>
+                <option value="femenino">Femenino</option>
+              </select>
+            </div>
             {/* Botón */}
             <button
               type="submit"
@@ -356,6 +388,17 @@ export default function profileSettings({ profile }: { profile: profileUserType 
           </form>
         </div>
       </div>
+
+      {/* Modal de éxito */}
+      {modalShow && (
+        <ModalPopUp
+          modalType={modalType || "success"}
+          modalTitle={modalTitle}
+          modalMessage={modalMessage}
+          modalShow={modalShow}
+          onClose={() => setModalShow(false)}
+        />
+      )}
     </div>
   );
 }

@@ -51,6 +51,13 @@ export default function HeaderAuth({ user, avatarUrl }: HeaderProps) {
                   Ajustes
                 </a>
 
+                <a
+                  href="/bench-movements"
+                  className="block px-4 py-2 hover:bg-gray-100"
+                >
+                  Benchmarks
+                </a>
+
                 <form onSubmit={handleSubmit}>
                   <button
                     type="submit"
