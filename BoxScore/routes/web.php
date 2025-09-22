@@ -128,6 +128,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/bench-movements', [BenchMovementsController::class,'showBenchMarkMovementsUser'])
         ->middleware('auth')
         ->name('bench-movements');
+
+    Route::post('update-bench-movements', [BenchMovementsController::class, 'storeBenchMarksMovements'])
+        ->middleware('auth')
+        ->name('update-bench-movements');
     
 });
 
