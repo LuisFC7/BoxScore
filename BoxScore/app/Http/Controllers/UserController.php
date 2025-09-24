@@ -101,6 +101,11 @@ class UserController{
                 'city' => $user->user_city,
                 'emergencyphone' => $user->user_phone_emergency_contact,
                 'profile_image' => $user->user_img,
+                'gender' => $user->user_gender,
+                'age' => $user->user_age,
+                'height' => $user->user_height, 
+                'weight' => $user->user_weight,
+                'box' => $user->user_box_name
             ]
         ]);
     }
@@ -120,6 +125,10 @@ class UserController{
             'profile_image'   => 'nullable|image|max:2048',
             'password'        => ['nullable', 'confirmed', Password::defaults()],
             'gender'          => 'nullable|string|max:40',
+            'age'             => 'nullable|integer|min:10|max:99',
+            'height'          => 'nullable|numeric',
+            'weight'          => 'nullable|numeric',
+            'box'          => 'nullable|string|max:255',
         ], [
             'fullname.required'   => 'El nombre es obligatorio y no puede estar vacío.',
             'fullname.max'        => 'El nombre no puede superar los 255 caracteres.',
@@ -141,6 +150,11 @@ class UserController{
             'user_city'     => $validated['city'] ?? null,
             'user_phone_emergency_contact' => $validated['emergencyphone'] ?? null,
             'user_gender'  => $validated['gender']?? null,
+            'user_age'  => $validated['age']?? null,
+            'user_height'  => $validated['height']?? null,
+            'user_weight'  => $validated['weight']?? null,
+            'user_box_name'  => $validated['box']?? null,
+
         ];
 
         // Imagen

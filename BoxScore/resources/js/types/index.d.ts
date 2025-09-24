@@ -58,6 +58,10 @@ export type profileUserType  = {
     city:string|null;
     emergencyphone:string|null;
     gender:string|null;
+    age:number|null;
+    height:number|null;
+    weight:number|null;
+    box:string|null;
 }
 
 export type BenchmarkMovement = {
@@ -84,3 +88,8 @@ export type benchMarkUserType = {
     avatarUrl:File | null;
     benchmarkMovements:BenchmarkMovement[];
 }
+
+export type FlashPropsType = {
+  flash?: { title?: string; message?: string };
+  errors?: Record<string, string>;
+};

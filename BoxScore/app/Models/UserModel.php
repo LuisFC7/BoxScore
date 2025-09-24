@@ -29,7 +29,11 @@ class UserModel extends Authenticatable implements MustVerifyEmail
         'user_state',
         'user_city',
         'user_phone_emergency_contact',
-        'user_gender'
+        'user_gender',
+        'user_age',
+        'user_height',
+        'user_weight',
+        'user_box_name'
     ];
 
     public $timestamps = true;
