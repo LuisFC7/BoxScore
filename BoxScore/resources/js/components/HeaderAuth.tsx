@@ -1,12 +1,9 @@
 import { useForm } from "@inertiajs/react";
 import React, { FormEvent, useState } from "react";
+import { HeaderPropsType } from "@/types";
 
-type HeaderProps = {
-  user: string;
-  avatarUrl?: string; 
-};
 
-export default function HeaderAuth({ user, avatarUrl }: HeaderProps) {
+export default function HeaderAuth({ user, avatarUrl }: HeaderPropsType) {
 
   const { post } = useForm({});
   const handleSubmit = (e: FormEvent) => {
@@ -55,7 +52,14 @@ export default function HeaderAuth({ user, avatarUrl }: HeaderProps) {
                   href="/bench-movements"
                   className="block px-4 py-2 hover:bg-gray-100"
                 >
-                  Benchmarks
+                  Benchmarks Lifts
+                </a>
+
+                <a
+                  href="/wods"
+                  className="block px-4 py-2 hover:bg-gray-100"
+                >
+                  WOD
                 </a>
 
                 <form onSubmit={handleSubmit}>

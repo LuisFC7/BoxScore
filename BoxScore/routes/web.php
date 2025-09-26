@@ -8,6 +8,7 @@ use Inertia\Inertia;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BenchMovementsController;
+use App\Http\Controllers\WodController;
 
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
@@ -132,6 +133,11 @@ Route::middleware(['auth'])->group(function () {
     Route::post('update-bench-movements', [BenchMovementsController::class, 'storeBenchMarksMovements'])
         ->middleware('auth')
         ->name('update-bench-movements');
+
+    // Wods Routes
+    Route::get('/wods', [WodController::class,'showWodsUser'])
+        ->middleware('auth')
+        ->name('wods');
     
 });
 

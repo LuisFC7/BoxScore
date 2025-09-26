@@ -10,6 +10,7 @@ import ModalPopUp from "@/components/ModalPopUp";
 import "react-phone-input-2/lib/style.css";
 import '../../../css/app.css';
 import { profileUserType, FlashPropsType } from "@/types";
+import BackButton from "@/components/BackButton";
 
 
 
@@ -106,6 +107,7 @@ export default function profileSettings({ profile }: { profile: profileUserType 
         user={profile.fullname}
         avatarUrl={profile.profile_image ? `/storage/${profile.profile_image}` : undefined}
       />
+      <BackButton />
 
       <div className="flex flex-1 items-center justify-center px-4 py-12">
         <div className="w-full max-w-md bg-white shadow-lg rounded-2xl p-8">
@@ -292,22 +294,22 @@ export default function profileSettings({ profile }: { profile: profileUserType 
             <div className="border-b pb-4">
               <details className="group">
                 <summary className="flex cursor-pointer items-center justify-between text-lg font-semibold text-gray-900 list-none">
-  <span className="flex items-center gap-2">
-    <Lock className="h-5 w-5 text-red-600" />
-    Seguridad
-  </span>
+                  <span className="flex items-center gap-2">
+                    <Lock className="h-5 w-5 text-red-600" />
+                    Seguridad
+                  </span>
 
-  {/* Flecha de desplegar */}
-  <svg
-    className="ml-2 h-5 w-5 text-gray-500 transition-transform group-open:rotate-180"
-    xmlns="http://www.w3.org/2000/svg"
-    fill="none"
-    viewBox="0 0 24 24"
-    stroke="currentColor"
-  >
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-  </svg>
-</summary>
+                  {/* Flecha de desplegar */}
+                  <svg
+                    className="ml-2 h-5 w-5 text-gray-500 transition-transform group-open:rotate-180"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </summary>
 
                 {/* Password */}
                 <div>
@@ -426,22 +428,22 @@ export default function profileSettings({ profile }: { profile: profileUserType 
             <div className="border-b pb-4">
               <details className="group">
                 <summary className="flex cursor-pointer items-center justify-between text-lg font-semibold text-gray-900 list-none">
-  <span className="flex items-center gap-2">
-    <Dumbbell className="h-5 w-5 text-green-600" />
-    Información de atleta
-  </span>
+                  <span className="flex items-center gap-2">
+                    <Dumbbell className="h-5 w-5 text-green-600" />
+                    Información de atleta
+                  </span>
 
-  {/* Flecha de desplegar */}
-  <svg
-    className="ml-2 h-5 w-5 text-gray-500 transition-transform group-open:rotate-180"
-    xmlns="http://www.w3.org/2000/svg"
-    fill="none"
-    viewBox="0 0 24 24"
-    stroke="currentColor"
-  >
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-  </svg>
-</summary>
+                  {/* Flecha de desplegar */}
+                  <svg
+                    className="ml-2 h-5 w-5 text-gray-500 transition-transform group-open:rotate-180"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </summary>
                 <div className="mt-4 space-y-3">
 
                   {/* Estatura */}

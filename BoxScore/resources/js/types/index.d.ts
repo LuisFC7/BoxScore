@@ -64,6 +64,12 @@ export type profileUserType  = {
     box:string|null;
 }
 
+export type BaseUser = {
+  email: string;
+  fullname: string;
+  avatarUrl: File | null;
+};
+
 export type BenchmarkMovement = {
   id: number;
   front_squat: number | null;
@@ -82,14 +88,34 @@ export type BenchmarkMovement = {
   benchmark_user_id: number;
 };
 
-export type benchMarkUserType = {
-    email:string;
-    fullname:string;
-    avatarUrl:File | null;
+export type benchMarkUserType = BaseUser & {
     benchmarkMovements:BenchmarkMovement[];
 }
+
+export type wodsMarkUserType = BaseUser & {
+  wods: wodsUserType[];    
+}
+
+export type wodsUserType = {
+  id: number;
+  wod_name: string;
+  wod_protocol: string | null;
+  wod_description: string | null;
+  wod_score: string | null;
+  wod_time: string | null;
+  wod_date: string | null;
+  created_at: string | null;
+  updated_at: string | null;
+  wod_user_id: number;
+};
 
 export type FlashPropsType = {
   flash?: { title?: string; message?: string };
   errors?: Record<string, string>;
+};
+
+
+type HeaderPropsType = {
+  user: string;
+  avatarUrl?: string; 
 };

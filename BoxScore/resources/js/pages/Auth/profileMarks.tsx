@@ -3,11 +3,8 @@ import { benchMarkUserType, BenchmarkMovement } from "@/types";
 import { useForm, usePage } from "@inertiajs/react";
 import { FormEvent, useEffect, useState } from "react";
 import ModalPopUp from "@/components/ModalPopUp";
-
-type FlashProps = {
-  flash?: { title?: string; message?: string };
-  errors?: Record<string, string>;
-};
+import { FlashPropsType } from "@/types";
+import BackButton from "@/components/BackButton";
 
 
 export default function ProfileMarks({ markUser }: { markUser: benchMarkUserType }) {
@@ -54,33 +51,28 @@ export default function ProfileMarks({ markUser }: { markUser: benchMarkUserType
         }
     };
 
-    
-      const { props } = usePage<FlashProps>();
-    
-      const [modalType, setModalType] = useState<"success" | "error" | null>(null);
-      const [modalTitle, setModalTitle] = useState("");
-      const [modalMessage, setModalMessage] = useState("");
-      const [modalShow, setModalShow] = useState(false);
-    
-      useEffect(() => {
-        // Caso éxito
+
+    const { props } = usePage<FlashPropsType>();
+
+    const [modalType, setModalType] = useState<"success" | "error" | null>(null);
+    const [modalTitle, setModalTitle] = useState("");
+    const [modalMessage, setModalMessage] = useState("");
+    const [modalShow, setModalShow] = useState(false);
+
+    useEffect(() => {
         if (props.flash?.message) {
-          setModalType("success");
-          setModalTitle(props.flash.title || "Éxito");
-          setModalMessage(props.flash.message || "RM's Actualizados");
-          setModalShow(true);
+            setModalType("success");
+            setModalTitle(props.flash.title || "Éxito");
+            setModalMessage(props.flash.message || "RM's Actualizados");
+            setModalShow(true);
         }
-    
-        // Caso error
         if (props.errors && Object.keys(props.errors).length > 0) {
-          setModalType("error");
-          setModalTitle("Error al actualizar tus RM's");
-          setModalMessage(Object.values(props.errors).join("\n"));
-          setModalShow(true);
+            setModalType("error");
+            setModalTitle("Error al actualizar tus RM's");
+            setModalMessage(Object.values(props.errors).join("\n"));
+            setModalShow(true);
         }
-      }, [props.flash, props.errors]);
-
-
+    }, [props.flash, props.errors]);
 
     return (
         <div className="min-h-screen flex flex-col bg-gray-50">
@@ -88,7 +80,9 @@ export default function ProfileMarks({ markUser }: { markUser: benchMarkUserType
                 user={markUser.fullname}
                 avatarUrl={markUser.avatarUrl ? `/storage/${markUser.avatarUrl}` : undefined}
             />
-
+            
+            <BackButton />
+            
             <div className="flex flex-1 items-center justify-center px-4 py-12">
                 <div className="w-full max-w-2xl bg-white shadow-xl rounded-2xl p-8">
                     <div className="text-center mb-8">
@@ -242,7 +236,7 @@ export default function ProfileMarks({ markUser }: { markUser: benchMarkUserType
                                     htmlFor="deadlift"
                                     className="block text-sm font-medium text-gray-700 mb-1"
                                 >
-                                    DeadLift 
+                                    DeadLift
                                 </label>
                                 <div className="relative">
                                     <input
@@ -415,15 +409,15 @@ export default function ProfileMarks({ markUser }: { markUser: benchMarkUserType
             </div>
 
             {/* Modal de éxito */}
-                  {modalShow && (
-                    <ModalPopUp
-                      modalType={modalType || "success"}
-                      modalTitle={modalTitle}
-                      modalMessage={modalMessage}
-                      modalShow={modalShow}
-                      onClose={() => setModalShow(false)}
-                    />
-                  )}
+            {modalShow && (
+                <ModalPopUp
+                    modalType={modalType || "success"}
+                    modalTitle={modalTitle}
+                    modalMessage={modalMessage}
+                    modalShow={modalShow}
+                    onClose={() => setModalShow(false)}
+                />
+            )}
         </div>
     );
 
