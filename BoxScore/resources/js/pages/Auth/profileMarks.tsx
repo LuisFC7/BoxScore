@@ -75,7 +75,7 @@ export default function ProfileMarks({ markUser }: { markUser: benchMarkUserType
     }, [props.flash, props.errors]);
 
     return (
-        <div className="min-h-screen flex flex-col bg-gray-50">
+        <div className="min-h-screen flex flex-col">
             <HeaderAuth
                 user={markUser.fullname}
                 avatarUrl={markUser.avatarUrl ? `/storage/${markUser.avatarUrl}` : undefined}

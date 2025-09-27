@@ -109,6 +109,8 @@ export type wodsUserType = {
   wod_user_id: number;
 };
 
+
+
 export type FlashPropsType = {
   flash?: { title?: string; message?: string };
   errors?: Record<string, string>;

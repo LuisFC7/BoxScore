@@ -138,6 +138,21 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/wods', [WodController::class,'showWodsUser'])
         ->middleware('auth')
         ->name('wods');
+
+    Route::post('/wods-store', [WodController::class, 'storeWodsUser'])
+        ->middleware('auth')
+        ->name('wods-store');
+
+    // Route::post('/wods-delete', [WodController::class, 'deleteWodsUser'])
+    //     ->middleware('auth')
+    //     ->name('wods-delete');
+    Route::put('/wods-update/{id}', [WodController::class, 'updateWodUser'])
+        ->middleware('auth')
+        ->name('wods.update');
+
+    Route::delete('/wods-delete/{id}', [WodController::class, 'deleteWodsUser'])
+        ->middleware('auth')
+        ->name('wods.destroy');
     
 });
 
