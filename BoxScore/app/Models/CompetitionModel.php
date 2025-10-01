@@ -11,6 +11,7 @@ class CompetitionModel extends Model{
 
     protected $table = 'competitions';
     protected $primaryKey = 'id';
+    public $timestamps = true;
 
     protected $fillable = [
         'competition_name',
@@ -23,9 +24,14 @@ class CompetitionModel extends Model{
         'competition_status',
         'competition_max_participants',
         'competition_type',
-        'competition_fee'
+        'competition_fee',
+        'competition_start_date',
+        'competition_finish_date'
     ];
 
-    public $timestamps = true;
+    public function competitionRelation(){
+        return $this->belongsTo(UserModel::class, 'competition_organizer_id');
+    }
+
     
 }

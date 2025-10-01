@@ -1,45 +1,6 @@
 import { InertiaLinkProps } from '@inertiajs/react';
 import { LucideIcon } from 'lucide-react';
 
-// export interface Auth {
-//     user: User;
-// }
-
-// export interface BreadcrumbItem {
-//     title: string;
-//     href: string;
-// }
-
-// export interface NavGroup {
-//     title: string;
-//     items: NavItem[];
-// }
-
-// export interface NavItem {
-//     title: string;
-//     href: NonNullable<InertiaLinkProps['href']>;
-//     icon?: LucideIcon | null;
-//     isActive?: boolean;
-// }
-
-// export interface SharedData {
-//     name: string;
-//     quote: { message: string; author: string };
-//     auth: Auth;
-//     sidebarOpen: boolean;
-//     [key: string]: unknown;
-// }
-
-// export interface User {
-//     id: number;
-//     name: string;
-//     email: string;
-//     avatar?: string;
-//     email_verified_at: string | null;
-//     created_at: string;
-//     updated_at: string;
-//     [key: string]: unknown; // This allows for additional properties...
-// }
 
 export type resetPasswordForm = {
     email:string
@@ -110,7 +71,6 @@ export type wodsUserType = {
 };
 
 
-
 export type FlashPropsType = {
   flash?: { title?: string; message?: string };
   errors?: Record<string, string>;
@@ -121,3 +81,33 @@ type HeaderPropsType = {
   user: string;
   avatarUrl?: string; 
 };
+
+//Competition
+export type CompetitionType = {
+  id: number;
+  name:string;
+  date:Date;
+  place:string;
+  box_name: string;
+  img: File | null;
+  organizer_id: number;
+  description:string|null;
+  status: string;
+  participants:number;
+  type:string|null;
+  fee:number;
+  competition_start_date:Date;
+  competition_finish_date:Date|null;
+}
+
+export type CategoriesType = {
+  id:number;
+  category_name:string;
+  category_genre:string;
+}
+export type CompetitionRegisterDataType  = {
+  email:string;
+  fullname:string;
+  avatarUrl: File | null;
+  categories: CategoriesType[];
+}

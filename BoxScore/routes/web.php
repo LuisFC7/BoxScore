@@ -9,9 +9,12 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BenchMovementsController;
 use App\Http\Controllers\WodController;
+use App\Http\Controllers\CompetitionController;
+use App\Http\Controllers\CategoryController;
 
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 
 Route::get('/', function () {
     return Inertia::render('welcome');
@@ -153,6 +156,15 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/wods-delete/{id}', [WodController::class, 'deleteWodsUser'])
         ->middleware('auth')
         ->name('wods.destroy');
+
+    //Competition
+    Route::get('/competitions-organizer', [CompetitionController::class,'showCompetitionOrganized'])
+        ->middleware('auth')
+        ->name('competitions-organizer');
+
+    Route::get('/categories', [CategoryController::class, 'showCategories'])
+        ->middleware('auth')
+        ->name('categories');
     
 });
 
