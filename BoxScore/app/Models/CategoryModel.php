@@ -17,4 +17,8 @@ class CategoryModel extends Model{
         'category_name',
         'category_genre'
     ];
+
+    public function competitionCategoryRelation(){
+        return $this->hasMany(CompetitionCategoryModel::class, 'category_id', 'id');
+    }
 }

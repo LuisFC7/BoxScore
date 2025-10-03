@@ -15,7 +15,6 @@ class CompetitionModel extends Model{
 
     protected $fillable = [
         'competition_name',
-        'competition_date',
         'competition_place',
         'competition_box_name',
         'competition_img',
@@ -31,6 +30,10 @@ class CompetitionModel extends Model{
 
     public function competitionRelation(){
         return $this->belongsTo(UserModel::class, 'competition_organizer_id');
+    }
+
+    public function competitionCategoryRelation(){
+        return $this->hasMany(CompetitionCategoryModel::class, 'competition_id', 'id');
     }
 
     

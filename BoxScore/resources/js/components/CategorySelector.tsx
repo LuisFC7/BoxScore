@@ -1,16 +1,27 @@
 import { useState } from "react";
 import { CategoriesType } from "@/types";
 
-export default function CategorySelector({ categories }: { categories: CategoriesType[] }) {
+type CategorySelectorProps = {
+    categories: CategoriesType[];
+    onChange?: (selectedIds: number[]) => void;
+}
+
+export default function CategorySelector({ categories, onChange }: CategorySelectorProps) {
     const [selected, setSelected] = useState<number[]>([]);
 
 
     const toggleCategory = (id: number) => {
+        let newSelected: number[];
         if (selected.includes(id)) {
-            setSelected(selected.filter(catId => catId !== id));
+            newSelected = selected.filter(catId => catId !== id);
         } else {
-            setSelected([...selected, id]);
+            newSelected = [...selected, id];
         }
+
+        setSelected(newSelected);
+
+
+        if (onChange) onChange(newSelected);
     };
 
     return (
@@ -36,12 +47,16 @@ export default function CategorySelector({ categories }: { categories: Categorie
                 })}
             </ul>
 
-            {/* Mostrar categorías seleccionadas */}
             <div className="mt-4">
-                <h3 className="text-sm text-black-500 font-medium">Seleccionadas:</h3>
-                <p className="text-black-600 font-semibold">
+                <h3 className="text-sm text-black font-medium">Seleccionadas:</h3>
+                <p className="text-black font-semibold">
                     {selected.length > 0
-                        ? selected.map(id => categories.find(c => c.id === id)?.category_name).join(", ")
+                        ? selected
+                            .map(id => {
+                                const category = categories.find(c => c.id === id);
+                                return category ? `${category.category_name} (${category.category_genre})` : "";
+                            })
+                            .join(", ")
                         : "Ninguna seleccionada"}
                 </p>
             </div>

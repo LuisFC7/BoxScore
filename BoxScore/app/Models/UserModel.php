@@ -77,6 +77,10 @@ class UserModel extends Authenticatable implements MustVerifyEmail
     public function competitionOrganizedRelation(){
         return $this->hasMany(WodModel::class, 'competition_organizer_id', 'id');
     }
+    
+    public function competitionCategoryRelation(){
+        return $this->hasMany(WodModel::class, 'organizer_comp_id', 'id');
+    }
 
 
     // Ocultar contraseña en arrays/JSON

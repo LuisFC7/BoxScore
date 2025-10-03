@@ -165,6 +165,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/categories', [CategoryController::class, 'showCategories'])
         ->middleware('auth')
         ->name('categories');
+
+    Route::post('/competitions-saving', [CompetitionController::class, 'storeCompetition'])
+        ->middleware('auth')
+        ->name('competitions-saving');
     
 });
 

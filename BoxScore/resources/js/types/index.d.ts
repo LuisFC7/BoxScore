@@ -111,3 +111,16 @@ export type CompetitionRegisterDataType  = {
   avatarUrl: File | null;
   categories: CategoriesType[];
 }
+
+export type CompetitionFormDataType = {
+  competition_name:string;
+  competition_place:string;
+  competition_place_link:competition_place_link|null;
+  competition_box_name:string;
+  competition_img: File | null;
+  competition_description:string;
+  competition_fee:number;
+  competition_start_date: string;
+  competition_finish_date:string|null;
+  competition_categories:number[];
+} 
