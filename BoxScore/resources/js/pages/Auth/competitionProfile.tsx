@@ -2,11 +2,11 @@ import ModalPopUp from "@/components/ModalPopUp";
 import BackButton from "@/components/BackButton";
 import HeaderAuth from "@/components/HeaderAuth";
 import CategorySelector from "@/components/CategorySelector";
-import { CompetitionRegisterDataType, CompetitionFormDataType } from "@/types";
+import { CompetitionRegisterDataType, CompetitionFormDataType, FlashPropsType } from "@/types";
 
 
-import { FormEvent, useState } from "react";
-import { useForm } from "@inertiajs/react";
+import { FormEvent, useEffect, useState } from "react";
+import { useForm, usePage } from "@inertiajs/react";
 
 export default function CompetitionProfile({ competitionData }: { competitionData: CompetitionRegisterDataType }) {
 
@@ -27,7 +27,8 @@ export default function CompetitionProfile({ competitionData }: { competitionDat
         competition_fee: 0,
         competition_start_date: "",
         competition_finish_date: null,
-        competition_categories:[] as number[]
+        competition_categories:[] as number[],
+        competition_attendance_date: "",
     });
 
     const [preview, setPreview] = useState<string | null>(null);
@@ -46,6 +47,30 @@ export default function CompetitionProfile({ competitionData }: { competitionDat
         e.preventDefault()
         post("/competitions-saving") 
     }
+
+    const { props } = usePage<FlashPropsType>();
+    
+    const [modalType, setModalType] = useState<"success" | "error" | null>(null);
+    const [modalTitle, setModalTitle] = useState("");
+    const [modalMessage, setModalMessage] = useState("");
+    const [modalShow, setModalShow] = useState(false);
+
+    useEffect(() => {
+    
+        if (props.flash?.message) {
+          setModalType("success");
+          setModalTitle(props.flash.title || "Éxito");
+          setModalMessage(props.flash.message || "Operación exitosa");
+          setModalShow(true);
+        }
+    
+        if (props.errors && Object.keys(props.errors).length > 0) {
+          setModalType("error");
+          setModalTitle("Error al crear competencia");
+          setModalMessage(Object.values(props.errors).join("\n"));
+          setModalShow(true);
+        }
+    }, [props.flash, props.errors]);
 
 
     return (
@@ -206,7 +231,7 @@ export default function CompetitionProfile({ competitionData }: { competitionDat
                             </label>
                             <input
                                 id="comDateStart"
-                                type="datetime"
+                                type="date"
                                 name="comDateStart"
                                 value={data.competition_start_date ?? ""}
                                 onChange={e => setData("competition_start_date", e.target.value)}
@@ -224,7 +249,7 @@ export default function CompetitionProfile({ competitionData }: { competitionDat
                             </label>
                             <input
                                 id="comDateFinish"
-                                type="datetime"
+                                type="date"
                                 name="comDateFinish"
                                 placeholder="2025-01-01"
                                 value={data.competition_finish_date ?? ""}
@@ -232,8 +257,26 @@ export default function CompetitionProfile({ competitionData }: { competitionDat
                                 className="mt-1 block w-full rounded-lg border border-gray-300 bg-gray-50 px-4 py-3 text-gray-900 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 transition"
                             />
                         </div>
-                        
 
+                        {/* {Last day for register} */}
+                        <div>
+                            <label
+                                htmlFor="comDateAttendance"
+                                className="block text-sm font-medium text-gray-700 mb-2"
+                            >
+                                Último dia de inscripción
+                            </label>
+                            <input
+                                id="comDateAttendance"
+                                type="date"
+                                name="comDateAttendance"
+                                placeholder="2025-01-01"
+                                value={data.competition_attendance_date ?? ""}
+                                onChange={e => setData("competition_attendance_date", e.target.value)}
+                                className="mt-1 block w-full rounded-lg border border-gray-300 bg-gray-50 px-4 py-3 text-gray-900 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 transition"
+                            />
+                        </div>
+                        
 
                         {/* Botón de enviar */}
                         <button
@@ -247,6 +290,17 @@ export default function CompetitionProfile({ competitionData }: { competitionDat
 
                 </div>
             </div>
+
+        {/* Modal de éxito */}
+        {modalShow && (
+            <ModalPopUp
+                modalType={modalType || "success"}
+                modalTitle={modalTitle}
+                modalMessage={modalMessage}
+                modalShow={modalShow}
+                onClose={() => setModalShow(false)}
+            />
+        )}
         </div>
     )
 }

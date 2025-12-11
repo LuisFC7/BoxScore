@@ -169,6 +169,11 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/competitions-saving', [CompetitionController::class, 'storeCompetition'])
         ->middleware('auth')
         ->name('competitions-saving');
+
+    //Show all the events that have been created
+    Route::get('/competitions-created', [CompetitionController::class, 'showCompetitionsCreated'])
+        ->middleware('auth')
+        ->name('competitions-created');
     
 });
 

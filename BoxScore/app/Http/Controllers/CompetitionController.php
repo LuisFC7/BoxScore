@@ -32,6 +32,35 @@ class CompetitionController{
         ]);
     }
 
+    public function showCompetitionsCreated(){
+        $user = Auth::user();
+
+        $competitions = CompetitionModel::select(
+            'id',
+            'competition_name',
+            'competition_box_name',
+            'competition_place',
+            'competition_start_date',
+            'competition_finish_date',
+            'competition_attendance_date',
+            'competition_img'
+        )
+        ->where('competition_status', 1)
+        ->orderBy('competition_start_date','asc')
+        ->get();
+    
+        return Inertia::render('Auth/competitionCreated', [
+            'competition_data' => [
+                'email' => $user->user_email,
+                'fullname'=> $user->user_name,
+                'avatarUrl' => $user->user_img,
+                'competitions' => $competitions
+            ]
+            
+        ]);
+        
+    }
+
     public function storeCompetition(Request $request){
         $user = Auth::user();
        
@@ -46,6 +75,7 @@ class CompetitionController{
             'competition_fee' => 'nullable|numeric',
             'competition_start_date' => 'required|date_format:Y-m-d',
             'competition_finish_date' => 'nullable|date_format:Y-m-d',
+            'competition_attendance_date' => 'nullable|date_format:Y-m-d',
             'competition_categories'=>'array'
         ], [
             'competition_name.required' => 'El nombre de la competencia es obligatorio.',
@@ -53,15 +83,23 @@ class CompetitionController{
             'competition_box_name.required' => 'El nombre del box es obligatorio.',
             'competition_img.image' => 'La imagen debe ser un archivo válido.',
             'competition_img.max' => 'La imagen no puede superar los 2MB.',
+            'competition_img.uploaded' => 'La imagen es demasiado grande o ocurrió un error al subirla.',
             'competition_fee.numeric' => 'El precio debe ser un número válido.',
             'competition_start_date.required' => 'La fecha de inicio es obligatoria.',
             'competition_start_date.date_format' => 'La fecha de inicio debe tener el formato YYYY-MM-DD.',
-            'competition_finish_date.date_format' => 'La fecha de finalización debe tener el formato YYYY-MM-DD.'
+            'competition_finish_date.date_format' => 'La fecha de finalización debe tener el formato YYYY-MM-DD.',
+            'competition_attendance_date.required' => 'La fecha de inscripción es obligatoria.',
+            'competition_attendance_date.date_format' => 'La fecha de inscripción debe tener el formato YYYY-MM-DD.'
         ]);
+
+        if ($request->hasFile('competition_img')) {
+            $validate['competition_img'] = $request->file('competition_img')->store('competitions_images', 'public');
+        }
+
 
         $competition = CompetitionModel::create([
             'competition_organizer_id' => $user->id,
-            'competition_status' => '0',
+            'competition_status' => '1',
             ...$validate
         ]);
 
@@ -73,7 +111,7 @@ class CompetitionController{
 
         return redirect()->route('wods')->with('flash',[
             'title' => 'Éxito',
-            'message' => 'WOD agregado correctamente'
+            'message' => 'Competencia creada correctamente'
         ]);
 
     }

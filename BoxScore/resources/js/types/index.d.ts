@@ -1,7 +1,6 @@
 import { InertiaLinkProps } from '@inertiajs/react';
 import { LucideIcon } from 'lucide-react';
 
-
 export type resetPasswordForm = {
     email:string
 }
@@ -123,4 +122,28 @@ export type CompetitionFormDataType = {
   competition_start_date: string;
   competition_finish_date:string|null;
   competition_categories:number[];
+  competition_attendance_date:string;
 } 
+
+// Type for showing events
+export type CompetitionTypeAux = {
+  id: number;
+  competition_name: string;
+  competition_box_name: string;
+  competition_place: string;
+  competition_start_date: string;
+  competition_finish_date: string;
+  competition_img: string | null;
+  competition_attendance_date:string;
+};
+
+export type BaseUser = {
+  email: string;
+  fullname: string;
+  avatarUrl: string | null;
+};
+
+export type CompetitionCreatedType = BaseUser & {
+  competitions: CompetitionTypeAux[];
+};
+

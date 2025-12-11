@@ -25,7 +25,8 @@ class CompetitionModel extends Model{
         'competition_type',
         'competition_fee',
         'competition_start_date',
-        'competition_finish_date'
+        'competition_finish_date',
+        'competition_attendance_date'
     ];
 
     public function competitionRelation(){

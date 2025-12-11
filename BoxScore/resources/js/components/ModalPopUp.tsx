@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+import confetti from "canvas-confetti";
 import { CheckIcon, XCircleIcon, ExclamationTriangleIcon } from '@heroicons/react/24/solid';
 
 type ModalProps = {
@@ -6,8 +8,8 @@ type ModalProps = {
   modalMessage: string;
   modalShow: boolean;
   onClose: () => void;
-  onConfirm?: () => void;     // ← opcional
-  confirmText?: string;       // ← opcional, texto del botón
+  onConfirm?: () => void;
+  confirmText?: string;
 };
 
 export default function ModalPopUp({
@@ -41,26 +43,52 @@ export default function ModalPopUp({
   const Icon = iconMap[modalType];
   const bgColor = colorMap[modalType];
 
+  // 🎉 Lanza confeti cuando se muestre un modal de éxito
+  useEffect(() => {
+    if (modalShow && modalType === "success") {
+      const duration = 1600;
+
+      const end = Date.now() + duration;
+
+      (function frame() {
+        confetti({
+          particleCount: 5,
+          angle: 60,
+          spread: 55,
+          origin: { x: 0 }
+        });
+        confetti({
+          particleCount: 5,
+          angle: 120,
+          spread: 55,
+          origin: { x: 1 }
+        });
+
+        if (Date.now() < end) {
+          requestAnimationFrame(frame);
+        }
+      })();
+    }
+  }, [modalShow, modalType]);
+
   if (!modalShow) return null;
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
       <div className="bg-gray-800 rounded-xl shadow-lg max-w-sm w-full p-6 flex flex-col items-center text-center">
         
-        {/* Icono */}
         <div className={`${bgColor} rounded-full p-3 mb-4`}>
           <Icon className="h-6 w-6 text-white" />
         </div>
 
-        {/* Título */}
         <h2 className="text-white font-bold text-lg mb-2">
           {modalTitle || defaultTitle[modalType]}
         </h2>
 
-        {/* Mensaje */}
-        <p className="text-gray-400 text-sm mb-6">{modalMessage}</p>
+        <p className="text-gray-400 text-sm mb-6 whitespace-pre-line">
+          {modalMessage}
+        </p>
 
-        {/* Botones */}
         <div className="flex gap-2 w-full">
           <button
             className="bg-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-lg flex-1"
