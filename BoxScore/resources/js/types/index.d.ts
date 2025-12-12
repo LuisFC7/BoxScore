@@ -147,3 +147,7 @@ export type CompetitionCreatedType = BaseUser & {
   competitions: CompetitionTypeAux[];
 };
 
+// Payment type
+export type PricingPlanType = BaseUser & {
+  plan:string;
+};

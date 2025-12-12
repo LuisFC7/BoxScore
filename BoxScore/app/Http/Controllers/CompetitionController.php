@@ -115,4 +115,36 @@ class CompetitionController{
         ]);
 
     }
+
+    //Show pricing into login sessionn
+    public function showCompetitionPrice(Request $request){
+        $user = Auth::user();
+
+        return Inertia::render('Auth/pricingLogin',[
+            'userData' =>[
+                'email' => $user->user_email,
+                'fullname'=> $user->user_name,
+                'avatarUrl' => $user->user_img
+            ]
+        ]);
+    }
+
+    // Show form payment
+    public function showFormPlanPricing(Request $request)
+    {
+        $user = Auth::user();
+
+        $plan = $request->input('plan', null);
+
+        return Inertia::render('Auth/paymentCompetitionOrganizer', [
+            'planData' => [
+                'email'     => $user->user_email,
+                'fullname'  => $user->user_name,
+                'avatarUrl' => $user->user_img,
+                'plan'      => $plan
+            ]
+        ]);
+    }
+
+
 }

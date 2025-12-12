@@ -27,7 +27,7 @@ export default function Welcome() {
         {/* Desktop links */}
         <div className="hidden md:flex items-center space-x-4">
           <a href="#" className="text-[#79BC22] hover:text-[#A0D23F] font-medium transition">Eventos</a>
-          <a href="#" className="text-[#79BC22] hover:text-[#A0D23F] font-medium transition">Pricing</a>
+          <a href={'/pricing'} className="text-[#79BC22] hover:text-[#A0D23F] font-medium transition">Pricing</a>
           <a href={'/login'} className="text-[#79BC22] hover:text-[#A0D23F] font-medium transition">Iniciar Sesión</a>
           <a
             href={'/register'}
@@ -49,7 +49,7 @@ export default function Welcome() {
       {menuOpen && (
         <div className="md:hidden flex flex-col items-center bg-[#0F0F0F] border-b border-[#79BC22] space-y-4 py-4">
           <a href="#" className="text-[#79BC22] hover:text-[#A0D23F] font-medium transition">Eventos</a>
-          <a href="#" className="text-[#79BC22] hover:text-[#A0D23F] font-medium transition">Pricing</a>
+          <a href={'/pricing'} className="text-[#79BC22] hover:text-[#A0D23F] font-medium transition">Pricing</a>
           <a href={'/login'} className="text-[#79BC22] hover:text-[#A0D23F] font-medium transition">Iniciar Sesión</a>
           <a
             href={'/register'}

@@ -107,6 +107,11 @@ Route::get('/login', function () {
     return Inertia::render('login');
 })->name('login');
 
+// Pagina de Pricing
+Route::get('/pricing', function () {
+    return Inertia::render('pricing');
+})->name('pricing');
+
 Route::post('/user-login', [UserController::class, 'loginUser']) -> name('user.login');
 Route::post('/logout', [UserController::class, 'logoutUser'])->name('user.logout');
 
@@ -174,6 +179,16 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/competitions-created', [CompetitionController::class, 'showCompetitionsCreated'])
         ->middleware('auth')
         ->name('competitions-created');
+
+    // Routes for Pricing Competition
+
+    Route::get('/pricing-competition', [CompetitionController::class, 'showCompetitionPrice'])
+        ->middleware('auth')
+        ->name('/pricing-competition');
+
+    Route::post('/pricing-form', [CompetitionController::class, 'showFormPlanPricing'])
+        ->middleware('auth')
+        ->name('pricing-form');
     
 });
 
